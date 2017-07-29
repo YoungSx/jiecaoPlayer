@@ -75,7 +75,7 @@ export default {
           })
         }
         function fetchAB (url, cb) {
-          cb(torrent.files)
+          cb(file)
         }
       })
     },
