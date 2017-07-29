@@ -9,6 +9,7 @@
       <Button @click="seedClient">seed</Button>
       <Button @click="mediasource">mediaSorce</Button>
       <Button @click="videoStream">videoStream</Button>
+      <Button @click="MSE">MSE</Button>
     </div>
     <form action="" id="file-id">
       <input type="file" ref="file" name="file" id="file">
@@ -75,7 +76,10 @@ export default {
           })
         }
         function fetchAB (url, cb) {
-          cb(file)
+          cb(file.createReadStream({
+            start: 0,
+            end: 1024
+          }))
         }
       })
     },
