@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-// var VideoStream = require('videostream')
+var VideoStream = require('videostream')
 var MediaElementWrapper = require('mediasource')
 var WebTorrent = require('WebTorrent/WebTorrent.min')
 var client = new WebTorrent()
@@ -39,48 +39,65 @@ export default {
         var file = torrent.files.find(function (file) {
           return file.name.endsWith('.mp4')
         })
-        // let vs = VideoStream(file, document.querySelector('#my-video'))
-        // console.log(vs)
+        var exampleFile = {
+          length: 1000000,
+          createReadStream: function (opts) {
+            // debugger
+            var start = opts.start
+            var end = opts.end
+            console.log(start)
+            console.log(end)
+            let stream = file.createReadStream({
+              start: start,
+              end: end
+            })
+            console.log(stream)
+            return stream
+          }
+        }
+        let vs = VideoStream(exampleFile, document.querySelector('#my-video'))
+        console.log(vs)
         console.log(file)
+        // console.log(file.createReadStream({
+        //   start: 1000,
+        //   end: 5000
+        // }))
         // console.log(torrent.torrentFileBlobURL)
         // this.blobURL = torrent.torrentFileBlobURL
         // torrent.on('metadata', function (e) {
         //   console.log(e)
         // })
         // file.appendTo('.video')
-        this.file = file
-        let video = document.querySelector('#my-video')
-        var mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
-        if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
-          var mediaSource = new MediaSource()
-          // console.log(mediaSource.readyState); // closed
-          video.src = URL.createObjectURL(mediaSource)
-          mediaSource.addEventListener('sourceopen', sourceOpen)
-        } else {
-          console.error('Unsupported MIME type or codec: ', mimeCodec)
-        }
-        function sourceOpen (_) {
-          // console.log(this.readyState); // open
-          debugger
-          var mediaSource = this
-          var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
-          fetchAB(file.name, function (buf) {
-            sourceBuffer.addEventListener('updateend', function (_) {
-              mediaSource.endOfStream()
-              video.play()
-              console.log(mediaSource.readyState) // ended
-            })
-            console.log(typeof (buf))
-            debugger
-            sourceBuffer.appendBuffer(buf)
-          })
-        }
-        function fetchAB (url, cb) {
-          cb(file.createReadStream({
-            start: 0,
-            end: 1024
-          }))
-        }
+        // this.file = file
+        // let video = document.querySelector('#my-video')
+        // var mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+        // if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
+        //   var mediaSource = new MediaSource()
+        //   // console.log(mediaSource.readyState); // closed
+        //   video.src = URL.createObjectURL(mediaSource)
+        //   mediaSource.addEventListener('sourceopen', sourceOpen)
+        // } else {
+        //   console.error('Unsupported MIME type or codec: ', mimeCodec)
+        // }
+        // function sourceOpen (_) {
+        //   // console.log(this.readyState); // open
+        //   debugger
+        //   var mediaSource = this
+        //   var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
+        //   fetchAB(file.name, function (buf) {
+        //     sourceBuffer.addEventListener('updateend', function (_) {
+        //       mediaSource.endOfStream()
+        //       video.play()
+        //       console.log(mediaSource.readyState) // ended
+        //     })
+        //     console.log(typeof (buf))
+        //     debugger
+        //     sourceBuffer.appendBuffer(buf)
+        //   })
+        // }
+        // function fetchAB (url, cb) {
+        //   cb(file)
+        // }
       })
     },
     seedClient () {
