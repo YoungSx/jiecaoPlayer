@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-var VideoStream = require('videostream')
+// var VideoStream = require('videostream')
 var MediaElementWrapper = require('mediasource')
 var WebTorrent = require('WebTorrent/WebTorrent.min')
 var client = new WebTorrent()
@@ -39,25 +39,41 @@ export default {
         var file = torrent.files.find(function (file) {
           return file.name.endsWith('.mp4')
         })
-        var exampleFile = {
-          length: 1000000,
-          createReadStream: function (opts) {
-            // debugger
-            var start = opts.start
-            var end = opts.end
-            console.log(start)
-            console.log(end)
-            let stream = file.createReadStream({
-              start: start,
-              end: end
-            })
-            console.log(stream)
-            return stream
-          }
-        }
-        let vs = VideoStream(exampleFile, document.querySelector('#my-video'))
-        console.log(vs)
-        console.log(file)
+        file.renderTo('#my-video', function (err, ele) {
+          if (err) console.log(err)
+          console.log(ele)
+        })
+        file.getBlob(function callback (err, blob) {
+          if (err) console.log(err)
+          console.log(blob)
+        })
+        file.getBlobURL(function callback (err, url) {
+          if (err) console.log(err)
+          console.log(url)
+        })
+        file.getBuffer(function callback (err, buffer) {
+          if (err) console.log(err)
+          console.log(buffer)
+        })
+        // var exampleFile = {
+        //   length: 1000000,
+        //   createReadStream: function (opts) {
+        //     // debugger
+        //     var start = opts.start
+        //     var end = opts.end
+        //     // console.log(start)
+        //     // console.log(end)
+        //     let stream = file.createReadStream({
+        //       start: start,
+        //       end: end
+        //     })
+        //     // console.log(stream)
+        //     return stream
+        //   }
+        // }
+        // let vs = VideoStream(exampleFile, document.querySelector('#my-video'))
+        // console.log(vs)
+        // console.log(file)
         // console.log(file.createReadStream({
         //   start: 1000,
         //   end: 5000
