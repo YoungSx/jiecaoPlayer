@@ -2,6 +2,7 @@
   <div>
     <div class="video">
       <video id="my-video" autoplay controls></video>
+      <video id="my-video2" autoplay controls></video>
     </div>
     <div>
       <Input v-model="infoHash"></Input>
@@ -27,7 +28,8 @@ export default {
     return {
       infoHash: '',
       blobURL: '',
-      file: ''
+      file: '',
+      testBuffer: ''
     }
   },
   methods: {
@@ -68,14 +70,15 @@ export default {
               end: end
             })
             // console.log(stream.read())
-            // stream.on('data', (buf) => {
-            //   console.log(buf)
-            // })
-            stream.on('readable', () => {
-              debugger
-              let tempData = stream.read()
-              console.log(tempData)
+            stream.on('data', (buf) => {
+              console.log(buf)
+              this.testBuffer = buf
             })
+            // stream.on('readable', () => {
+            //   // debugger
+            //   let tempData = stream.read()
+            //   console.log(tempData)
+            // })
             return stream
           }
         }
@@ -196,6 +199,38 @@ export default {
         // videostream.detailedError will often have a more detailed error message
       })
       document.body.appendChild(elem)
+    },
+    MSE () {
+      let video = document.querySelector('#my-video2')
+      let _testBuffer = this.testBuffer
+      var mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+      if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
+        var mediaSource = new MediaSource()
+        // console.log(mediaSource.readyState); // closed
+        video.src = URL.createObjectURL(mediaSource)
+        mediaSource.addEventListener('sourceopen', sourceOpen)
+      } else {
+        console.error('Unsupported MIME type or codec: ', mimeCodec)
+      }
+      function sourceOpen (_) {
+        // console.log(this.readyState); // open
+        debugger
+        var mediaSource = this
+        var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
+        fetchAB('videoName', function (buf) {
+          sourceBuffer.addEventListener('updateend', function (_) {
+            mediaSource.endOfStream()
+            video.play()
+            console.log(mediaSource.readyState) // ended
+          })
+          console.log(typeof (buf))
+          debugger
+          sourceBuffer.appendBuffer(buf)
+        })
+      }
+      function fetchAB (url, cb) {
+        cb(_testBuffer)
+      }
     }
   }
 }
