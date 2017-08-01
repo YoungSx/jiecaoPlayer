@@ -29,7 +29,7 @@ export default {
       infoHash: '',
       blobURL: '',
       file: '',
-      testBuffer: ''
+      testBuffer: []
     }
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
         // })
         var exampleFile = {
           length: 1000000,
-          createReadStream: function (opts) {
+          createReadStream: opts => {
             // debugger
             var start = opts.start
             var end = opts.end
@@ -71,8 +71,9 @@ export default {
             })
             // console.log(stream.read())
             stream.on('data', (buf) => {
-              console.log(buf)
-              this.testBuffer = buf
+              // console.log(buf)
+              // console.log(this.testBuffer)
+              this.testBuffer.push(buf)
             })
             // stream.on('readable', () => {
             //   // debugger
@@ -202,7 +203,9 @@ export default {
     },
     MSE () {
       let video = document.querySelector('#my-video2')
-      let _testBuffer = this.testBuffer
+      let _testBuffer = this.testBuffer[0].buffer
+      console.log(_testBuffer)
+      debugger
       var mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
       if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
         var mediaSource = new MediaSource()
@@ -214,17 +217,16 @@ export default {
       }
       function sourceOpen (_) {
         // console.log(this.readyState); // open
-        debugger
         var mediaSource = this
         var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
         fetchAB('videoName', function (buf) {
           sourceBuffer.addEventListener('updateend', function (_) {
+            debugger
             mediaSource.endOfStream()
             video.play()
             console.log(mediaSource.readyState) // ended
           })
           console.log(typeof (buf))
-          debugger
           sourceBuffer.appendBuffer(buf)
         })
       }
