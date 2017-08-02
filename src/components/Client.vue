@@ -223,10 +223,10 @@ export default {
           sourceBuffer.addEventListener('updateend', function (_) {
             debugger
             mediaSource.endOfStream()
-            video.play()
+            // video.play()
             console.log(mediaSource.readyState) // ended
           })
-          console.log(typeof (buf))
+          console.log(buf)
           sourceBuffer.appendBuffer(buf)
         })
       }
