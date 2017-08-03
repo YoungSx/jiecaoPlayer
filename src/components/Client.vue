@@ -29,14 +29,23 @@ export default {
       infoHash: '',
       blobURL: '',
       file: '',
-      testBuffer: []
+      testBuffer: [],
+      stream: ''
     }
   },
   methods: {
     addClient () {
       // var torrentId = this.infoHash
-      var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
-      client.add(torrentId, (torrent) => {
+      // var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
+      var torrentId = '08ada5a7a6183aae1e09d831df6748d566095a10'
+      client.add(torrentId, {
+        announce: [
+          'http://138.68.60.223:8000/announce',
+          'udp://138.68.60.223:8000',
+          'udp://138.68.60.223:8000',
+          'ws://138.68.60.223:8000'
+        ]
+      }, (torrent) => {
         // Torrents can contain many files. Let's use the .mp4 file
         var file = torrent.files.find(function (file) {
           return file.name.endsWith('.mp4')
@@ -69,6 +78,7 @@ export default {
               start: start,
               end: end
             })
+            this.stream = stream
             // console.log(stream.read())
             stream.on('data', (buf) => {
               // console.log(buf)
@@ -133,11 +143,15 @@ export default {
       let infoHash = file
       client.seed(infoHash, {
         announce: [
-          'http://localhost:8000/announce',
-          'udp://0.0.0.0:8000',
-          'udp://localhost:8000',
-          'http://localhost:8000/stats',
-          'ws://localhost:8000'
+          // 'http://localhost:8000/announce',
+          // 'udp://0.0.0.0:8000',
+          // 'udp://localhost:8000',
+          // 'http://localhost:8000/stats',
+          // 'ws://localhost:8000'
+          'http://138.68.60.223:8000/announce',
+          'udp://138.68.60.223:8000',
+          'udp://138.68.60.223:8000',
+          'ws://138.68.60.223:8000'
         ]
       }, (torrent) => {
         // console.log(torrent['infoHash'])
@@ -147,19 +161,21 @@ export default {
       })
     },
     mediasource () {
-      function createElem (tagName) {
-        var elem = document.createElement(tagName)
-        elem.controls = true
-        elem.autoplay = true // for chrome
-        elem.play() // for firefox
-        document.body.appendChild(elem)
-        return elem
-      }
-      var elem = createElem('video')
-      var readable = this.file.createReadStream({
-        'start': 1,
-        'end': 10
-      }) // ... get a readable stream from somewhere
+      // function createElem (tagName) {
+      //   var elem = document.createElement(tagName)
+      //   elem.controls = true
+      //   elem.autoplay = true // for chrome
+      //   elem.play() // for firefox
+      //   document.body.appendChild(elem)
+      //   return elem
+      // }
+      // var elem = createElem('video')
+      // var readable = this.file.createReadStream({
+      //   'start': 1,
+      //   'end': 10
+      // }) // ... get a readable stream from somewhere
+      let readable = this.stream
+      let elem = document.querySelector('#my-video2')
       var wrapper = new MediaElementWrapper(elem)
       // The correct mime type, including codecs, must be provided
       var writable = wrapper.createWriteStream('video/webm; codecs="vorbis, vp8"')
