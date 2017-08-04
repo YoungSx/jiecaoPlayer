@@ -36,22 +36,23 @@ export default {
   methods: {
     addClient () {
       // var torrentId = this.infoHash
-      // var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
-      var torrentId = 'c53da4fa28aa2edc1faa91861cce38527414d874'
+      var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
+      // var torrentId = 'c53da4fa28aa2edc1faa91861cce38527414d874'
       client.add(torrentId, {
-        announce: [
-          'http://localhost:8000/announce',
-          'udp://0.0.0.0:8000',
-          'udp://localhost:8000',
-          'http://localhost:8000/stats',
-          'ws://localhost:8000'
-        ]
+        // announce: [
+        //   'http://localhost:8000/announce',
+        //   'udp://0.0.0.0:8000',
+        //   'udp://localhost:8000',
+        //   'http://localhost:8000/stats',
+        //   'ws://localhost:8000'
+        // ]
       }, (torrent) => {
         // Torrents can contain many files. Let's use the .mp4 file
         console.log(torrent.files)
         var file = torrent.files.find(function (file) {
           return file.name.endsWith('.mp4')
         })
+        console.log(file)
         // file.renderTo('#my-video', function (err, ele) {
         //   if (err) console.log(err)
         //   console.log(ele)
@@ -97,47 +98,6 @@ export default {
         }
         let vs = VideoStream(exampleFile, document.querySelector('#my-video'))
         console.log(vs)
-        // console.log(file)
-        // console.log(file.createReadStream({
-        //   start: 1000,
-        //   end: 5000
-        // }))
-        // console.log(torrent.torrentFileBlobURL)
-        // this.blobURL = torrent.torrentFileBlobURL
-        // torrent.on('metadata', function (e) {
-        //   console.log(e)
-        // })
-        // file.appendTo('.video')
-        // this.file = file
-        // let video = document.querySelector('#my-video')
-        // var mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
-        // if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
-        //   var mediaSource = new MediaSource()
-        //   // console.log(mediaSource.readyState); // closed
-        //   video.src = URL.createObjectURL(mediaSource)
-        //   mediaSource.addEventListener('sourceopen', sourceOpen)
-        // } else {
-        //   console.error('Unsupported MIME type or codec: ', mimeCodec)
-        // }
-        // function sourceOpen (_) {
-        //   // console.log(this.readyState); // open
-        //   debugger
-        //   var mediaSource = this
-        //   var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
-        //   fetchAB(file.name, function (buf) {
-        //     sourceBuffer.addEventListener('updateend', function (_) {
-        //       mediaSource.endOfStream()
-        //       video.play()
-        //       console.log(mediaSource.readyState) // ended
-        //     })
-        //     console.log(typeof (buf))
-        //     debugger
-        //     sourceBuffer.appendBuffer(buf)
-        //   })
-        // }
-        // function fetchAB (url, cb) {
-        //   cb(file)
-        // }
       })
     },
     seedClient () {
@@ -223,7 +183,7 @@ export default {
       let video = document.querySelector('#my-video2')
       let _testBuffer = this.testBuffer[0].buffer
       console.log(_testBuffer)
-      debugger
+      // debugger
       var mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
       if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
         var mediaSource = new MediaSource()
@@ -239,7 +199,7 @@ export default {
         var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
         fetchAB('videoName', function (buf) {
           sourceBuffer.addEventListener('updateend', function (_) {
-            debugger
+            // debugger
             mediaSource.endOfStream()
             // video.play()
             console.log(mediaSource.readyState) // ended
