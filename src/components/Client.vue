@@ -54,10 +54,10 @@ export default {
           return file.name.endsWith('.mp4')
         })
         // console.log(file)
-        // file.renderTo('#my-video', function (err, ele) {
-        //   if (err) console.log(err)
-        //   console.log(ele)
-        // })
+        file.renderTo('#my-video', function (err, ele) {
+          if (err) console.log(err)
+          console.log(ele)
+        })
         // file.getBlob(function callback (err, blob) {
         //   if (err) console.log(err)
         //   console.log(blob)
@@ -212,13 +212,14 @@ export default {
         var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
         fetchAB('http://138.68.60.223/Sintel.mp4', function (buf) {
           sourceBuffer.addEventListener('updateend', function (_) {
+            debugger
             console.log(mediaSource.readyState)
             mediaSource.endOfStream()
             video.play()
             console.log(mediaSource.readyState) // ended
           })
           console.log(buf)
-          // debugger
+          debugger
           sourceBuffer.appendBuffer(buf)
         })
       }
