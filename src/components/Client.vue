@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-var VideoStream = require('videostream')
+// var VideoStream = require('videostream')
 var MediaElementWrapper = require('mediasource')
 var WebTorrent = require('WebTorrent/WebTorrent.min')
 var client = new WebTorrent()
@@ -36,24 +36,24 @@ export default {
   methods: {
     addClient () {
       // var torrentId = this.infoHash
-      // var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
+      var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
       // var torrentId = 'c53da4fa28aa2edc1faa91861cce38527414d874'
-      var torrentId = '5f7e8d2d8b322b00e0eeffe78d5d53a92c475a88'
+      // var torrentId = '5f7e8d2d8b322b00e0eeffe78d5d53a92c475a88'
       client.add(torrentId, {
-        announce: [
-          'http://localhost:8000/announce',
-          'udp://0.0.0.0:8000',
-          'udp://localhost:8000',
-          'http://localhost:8000/stats',
-          'ws://localhost:8000'
-        ]
+        // announce: [
+        //   'http://localhost:8000/announce',
+        //   'udp://0.0.0.0:8000',
+        //   'udp://localhost:8000',
+        //   'http://localhost:8000/stats',
+        //   'ws://localhost:8000'
+        // ]
       }, (torrent) => {
         // Torrents can contain many files. Let's use the .mp4 file
-        console.log(torrent.files)
+        // console.log(torrent.files)
         var file = torrent.files.find(function (file) {
           return file.name.endsWith('.mp4')
         })
-        console.log(file)
+        // console.log(file)
         // file.renderTo('#my-video', function (err, ele) {
         //   if (err) console.log(err)
         //   console.log(ele)
@@ -70,35 +70,47 @@ export default {
         //   if (err) console.log(err)
         //   console.log(buffer)
         // })
-        var exampleFile = {
-          length: 1000000,
-          createReadStream: opts => {
-            // debugger
-            var start = opts.start
-            var end = opts.end
-            // console.log(start)
-            // console.log(end)
-            let stream = file.createReadStream({
-              start: start,
-              end: end
-            })
-            this.stream = stream
-            // console.log(stream.read())
-            stream.on('data', (buf) => {
-              // console.log(buf)
-              // console.log(this.testBuffer)
-              this.testBuffer.push(buf)
-            })
-            // stream.on('readable', () => {
-            //   // debugger
-            //   let tempData = stream.read()
-            //   console.log(tempData)
-            // })
-            return stream
-          }
-        }
-        let vs = VideoStream(exampleFile, document.querySelector('#my-video'))
-        console.log(vs)
+        // var exampleFile = {
+        //   length: 1000000,
+        //   createReadStream: opts => {
+        //     // debugger
+        //     var start = opts.start
+        //     var end = opts.end
+        //     // console.log(start)
+        //     // console.log(end)
+        //     let stream = file.createReadStream({
+        //       start: start,
+        //       end: end
+        //     })
+        //     this.stream = stream
+        //     // console.log(stream.read())
+        //     stream.on('data', (buf) => {
+        //       // console.log(buf)
+        //       // console.log(this.testBuffer)
+        //       this.testBuffer.push(buf)
+        //     })
+        //     // stream.on('readable', () => {
+        //     //   // debugger
+        //     //   let tempData = stream.read()
+        //     //   console.log(tempData)
+        //     // })
+        //     return stream
+        //   }
+        // }
+        // let vs = VideoStream(exampleFile, document.querySelector('#my-video'))
+        // console.log(vs)
+
+        let stream = file.createReadStream({
+          start: 0,
+          end: 1000
+        })
+        this.stream = stream
+        // console.log(stream.read())
+        stream.on('data', (buf) => {
+          console.log(buf)
+          // console.log(this.testBuffer)
+          this.testBuffer.push(buf)
+        })
       })
     },
     seedClient () {
@@ -183,9 +195,9 @@ export default {
     MSE () {
       let video = document.querySelector('#my-video2')
       let _testBuffer = this.testBuffer[0].buffer
-      console.log(_testBuffer)
+      // console.log(_testBuffer)
       // debugger
-      var mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+      var mimeCodec = 'video/mp4; codecs="avc1.64001f, mp4a.40.2"' // 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
       if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
         var mediaSource = new MediaSource()
         // console.log(mediaSource.readyState); // closed
@@ -200,13 +212,13 @@ export default {
         var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
         fetchAB('http://138.68.60.223/Sintel.mp4', function (buf) {
           sourceBuffer.addEventListener('updateend', function (_) {
-            debugger
             console.log(mediaSource.readyState)
             mediaSource.endOfStream()
             video.play()
             console.log(mediaSource.readyState) // ended
           })
           console.log(buf)
+          // debugger
           sourceBuffer.appendBuffer(buf)
         })
       }
