@@ -210,7 +210,7 @@ export default {
         console.log(this.readyState) // open
         var mediaSource = this
         var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
-        fetchAB('http://138.68.60.223/Sintel.mp4', function (buf) {
+        fetchAB('http://138.68.60.223/wt/fragmented.mp4', function (buf) {
           sourceBuffer.addEventListener('updateend', function (_) {
             debugger
             console.log(mediaSource.readyState)
@@ -233,6 +233,7 @@ export default {
         //   cb(xhr.response)
         // }
         // xhr.send()
+        // console.log(_testBuffer)
         cb(_testBuffer)
       }
     }
