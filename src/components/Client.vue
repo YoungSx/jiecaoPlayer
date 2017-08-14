@@ -36,17 +36,20 @@ export default {
   methods: {
     addClient () {
       // var torrentId = this.infoHash
-      var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
+      // var torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
       // var torrentId = 'c53da4fa28aa2edc1faa91861cce38527414d874'
       // var torrentId = '5f7e8d2d8b322b00e0eeffe78d5d53a92c475a88'
+      // frag_bunny on instant.io
+      // var torrentId = 'magnet:?xt=urn:btih:365fd63d58813dc620645e0afd928220f0bd69cd&dn=frag_bunny.mp4&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com'
+      var torrentId = '365fd63d58813dc620645e0afd928220f0bd69cd'
       client.add(torrentId, {
-        // announce: [
-        //   'http://localhost:8000/announce',
-        //   'udp://0.0.0.0:8000',
-        //   'udp://localhost:8000',
-        //   'http://localhost:8000/stats',
-        //   'ws://localhost:8000'
-        // ]
+        announce: [
+          'http://localhost:8000/announce',
+          'udp://0.0.0.0:8000',
+          'udp://localhost:8000',
+          'http://localhost:8000/stats',
+          'ws://localhost:8000'
+        ]
       }, (torrent) => {
         // Torrents can contain many files. Let's use the .mp4 file
         // console.log(torrent.files)
@@ -107,7 +110,7 @@ export default {
         this.stream = stream
         // console.log(stream.read())
         stream.on('data', (buf) => {
-          console.log(buf)
+          // console.log(buf)
           // console.log(this.testBuffer)
           this.testBuffer.push(buf)
         })
@@ -212,15 +215,16 @@ export default {
         var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
         fetchAB('http://138.68.60.223/wt/fragmented.mp4', function (buf) {
           sourceBuffer.addEventListener('updateend', function (_) {
-            debugger
+            // debugger
             console.log(mediaSource.readyState)
             mediaSource.endOfStream()
             video.play()
             console.log(mediaSource.readyState) // ended
           })
           console.log(buf)
-          debugger
+          // debugger
           sourceBuffer.appendBuffer(buf)
+          console.log(sourceBuffer.buffered)
         })
       }
       function fetchAB (url, cb) {
