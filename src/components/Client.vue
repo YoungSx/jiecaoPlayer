@@ -197,7 +197,7 @@ export default {
     },
     MSE () {
       let video = document.querySelector('#my-video2')
-      let _testBuffer = this.testBuffer[0].buffer
+      // let _testBuffer = this.testBuffer[0].buffer
       // console.log(_testBuffer)
       // debugger
       var mimeCodec = 'video/mp4; codecs="avc1.64001f, mp4a.40.2"' // 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
@@ -213,7 +213,7 @@ export default {
         console.log(this.readyState) // open
         var mediaSource = this
         var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
-        fetchAB('http://138.68.60.223/wt/fragmented.mp4', function (buf) {
+        fetchAB('http://138.68.60.223/wt/frag_bunny.mp4', function (buf) {
           sourceBuffer.addEventListener('updateend', function (_) {
             // debugger
             console.log(mediaSource.readyState)
@@ -228,17 +228,17 @@ export default {
         })
       }
       function fetchAB (url, cb) {
-        // console.log(url)
-        // var xhr = new XMLHttpRequest()
-        // xhr.open('get', url)
-        // xhr.responseType = 'arraybuffer'
-        // xhr.onload = function () {
-        //   debugger
-        //   cb(xhr.response)
-        // }
-        // xhr.send()
+        console.log(url)
+        var xhr = new XMLHttpRequest()
+        xhr.open('get', url)
+        xhr.responseType = 'arraybuffer'
+        xhr.onload = function () {
+          debugger
+          cb(xhr.response)
+        }
+        xhr.send()
         // console.log(_testBuffer)
-        cb(_testBuffer)
+        // cb(_testBuffer)
       }
     }
   }
