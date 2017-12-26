@@ -212,7 +212,11 @@ export default {
         console.log(this.readyState) // open
         var mediaSource = this
         var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec)
-        fetchAB('http://otof18y9e.bkt.clouddn.com/frag_bunny.mp4', function (buf) {
+        let videoUrl = [
+          'http://otof18y9e.bkt.clouddn.com/frag_bunny.mp4',
+          'http://otof18y9e.bkt.clouddn.com/Sintel.mp4'
+        ]
+        fetchAB(videoUrl[0], function (buf) {
           sourceBuffer.addEventListener('updateend', function (_) {
             // debugger
             console.log(mediaSource.readyState)
