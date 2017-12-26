@@ -87,7 +87,7 @@ export default {
             this.stream = stream
             // console.log(stream.read())
             stream.on('data', (buf) => {
-              console.log(buf)
+              // console.log(buf)
               // console.log(this.testBuffer)
               this.testBuffer.push(buf)
             })
@@ -195,7 +195,7 @@ export default {
       document.body.appendChild(elem)
     },
     MSE () {
-      let video = document.querySelector('#my-video2')
+      let video = document.querySelector('#my-video')
       let _testBuffer = this.testBuffer[0].buffer
       // console.log(_testBuffer)
       // debugger
@@ -227,17 +227,17 @@ export default {
         })
       }
       function fetchAB (url, cb) {
-        // console.log(url)
-        // var xhr = new XMLHttpRequest()
-        // xhr.open('get', url)
-        // xhr.responseType = 'arraybuffer'
-        // xhr.onload = function () {
-        //   debugger
-        //   cb(xhr.response)
-        // }
-        // xhr.send()
+        console.log(url)
+        var xhr = new XMLHttpRequest()
+        xhr.open('get', url)
+        xhr.responseType = 'arraybuffer'
+        xhr.onload = function () {
+          debugger
+          cb(xhr.response)
+        }
+        xhr.send()
         console.log(_testBuffer)
-        cb(_testBuffer)
+        // cb(_testBuffer)
       }
     }
   }
