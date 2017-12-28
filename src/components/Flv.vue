@@ -14,7 +14,7 @@ export default {
         var videoElement = document.getElementById('videoElement')
         var flvPlayer = flvjs.createPlayer({
           type: 'flv',
-          url: 'http://otof18y9e.bkt.clouddn.com/frag_bunny.mp4'
+          url: 'http://otof18y9e.bkt.clouddn.com/part1.flv'
         })
         flvPlayer.attachMediaElement(videoElement)
         flvPlayer.load()
